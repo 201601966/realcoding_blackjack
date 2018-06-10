@@ -33,6 +33,9 @@ public class Player {
         if(balance < bet) {
             throw new NotEnoughBalanceException();
         }
+        if(balance <= 1000) {
+            bet = balance;
+        }
         balance -= bet;
         currentBet = bet;
 
