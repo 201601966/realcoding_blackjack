@@ -33,7 +33,19 @@ public class Hand {
                 sum+=cardList.get(i).getRank();
             }
         }
+        if(checkAce()==true && sum+11 < 22) {
+            sum += 11;
+        }
         return sum;
+    }
+
+    public boolean checkAce() {
+        for(int i=0;i<cardList.size();i++) {
+            if (cardList.get(i).getRank() == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void reset() {
