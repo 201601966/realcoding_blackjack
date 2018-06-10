@@ -62,7 +62,11 @@ public class Player {
     }
 
     public Card hitCard() {
-        return hand.drawCard();
+        if(hand.getCardSum() < 21){
+            return hand.drawCard();
+        }
+        stand();
+        return null;
     }
 
     public void stand() {
