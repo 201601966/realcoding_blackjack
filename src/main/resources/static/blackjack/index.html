@@ -425,7 +425,7 @@
         <p>ID : <span id="myID"> </span> </p><!--현재 아이디 추가-->
         <p>MONEY : <span id="myMONEY"> </span></p><!--현재 아이디 추가-->
     </div>
-    <div class="rank">
+    <div class="rank"> <!-- ranking 추가 -->
         <p>Ranking : </p>
     </div>
     <br>
@@ -505,6 +505,9 @@
     $('#deal').click(function() {
         var bet = parseInt($('#bet').html());
 
+        if(bet == 0){ // betting금액이 0이면 경고창 띄워 알려주기
+            alert("0보다 큰 금액을 betting 해야 됩니다.");
+        }
         $.ajax({
             type: 'POST',
             url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/bet',
