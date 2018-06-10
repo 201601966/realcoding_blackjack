@@ -1,6 +1,7 @@
 package kr.ac.cnu.web.games.blackjack;
 
 import kr.ac.cnu.web.exceptions.NotEnoughBalanceException;
+import kr.ac.cnu.web.exceptions.BetZeroException;
 import lombok.Getter;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -32,6 +33,9 @@ public class Player {
     public void placeBet(long bet) {
         if(balance < bet) {
             throw new NotEnoughBalanceException();
+        }
+        if(bet == 0){ // bet금액이 0일때
+            throw new BetZeroException();
         }
         if(balance <= 1000) {
             bet = balance;
