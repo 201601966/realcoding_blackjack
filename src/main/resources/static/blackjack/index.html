@@ -407,7 +407,7 @@
 <body>
 <div class="page" id="login">
     <div>
-        <input type="text" id="input_login_name" />
+        <input type="text" id="input_login_name"/>
         <div class="buttons"><div class="btn" id="login_button">Login</div></div>
         <div class="buttons"><div class="btn" id="signup_button">Signup</div></div>
     </div>
@@ -418,6 +418,10 @@
     </div>
 </div>
 <div class="page" id="game" style="display: none">
+    <div>
+        <p>ID : <span id="myID"> </span> </p><!--현재 아이디 추가-->
+        <p>MONEY : <span id="myMONEY"> </span></p><!--현재 아이디 추가-->
+    </div>
     <div class="dealer-cards"></div>
     <div class="clear"></div>
     <div class="player-cards"></div>
@@ -486,6 +490,8 @@
             $('#game').show();
             gameRoomId = data.roomId;
             drawGameRoom(data);
+            //상단에 나의 아이디 보이게 함
+            document.getElementById('myID').innerHTML= document.getElementById('input_login_name').value;
         });
     })
 
@@ -534,11 +540,13 @@
         var currentBet = parseInt($('#bet').html());
         var money = parseInt($('#money').html());
         if (money < bet) {
-            bet = money;
+            bet = money;//베팅금액이 현재 돈보다 많을경우 전재산으로 함
         }
 
         $('#bet').html(currentBet + bet);
         $('#money').html(money - bet);
+        //현재 내 돈 추가
+        $('#myMONEY').html(money - bet);
     });
 
     $('#less').click(function(){
@@ -551,6 +559,8 @@
 
         $('#bet').html(currentBet - bet);
         $('#money').html(money + bet);
+        //현재 내 돈 추가
+        $('#myMONEY').html(money - bet);
     });
 
     function drawGameRoom(gameRoom) {
@@ -590,6 +600,8 @@
 
         $('#bet').html(gameRoom.playerList[user.name].currentBet);
         $('#money').html(gameRoom.playerList[user.name].balance);
+        //현재 내 돈 추가
+        $('#myMONEY').html(gameRoom.playerList[user.name].balance);
     }
 
     function generateCardDiv(rank, suit) {
