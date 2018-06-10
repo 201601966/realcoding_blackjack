@@ -22,7 +22,7 @@ import java.awt.*;
 import java.util.Optional;
 
 /**
- * Created by rokim on 2018. 5. 21..
+ * Created by rokim on 2018. 5. !21..
  */
 @RestController
 @RequestMapping("/api/black-jack")
