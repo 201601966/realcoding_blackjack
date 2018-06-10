@@ -45,7 +45,7 @@ public class Player {
     }
 
     public void win() {
-        balance += currentBet * 2;
+        balance += currentBet * 1.5;
         currentBet = 0;
     }
 
