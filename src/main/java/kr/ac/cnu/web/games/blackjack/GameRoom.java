@@ -1,6 +1,7 @@
 package kr.ac.cnu.web.games.blackjack;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
