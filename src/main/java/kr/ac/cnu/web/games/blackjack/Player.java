@@ -33,9 +33,7 @@ public class Player {
     }
 
     public void placeBet(long bet) {
-        if(balance < bet) {
-            throw new NotEnoughBalanceException();
-        }
+
         if (bet > 10000) {
             throw new BetTooMuchException();
         }
@@ -45,7 +43,14 @@ public class Player {
         if(balance <= 1000) {
             bet = balance;
         }
-        balance -= bet/2;
+        if(balance < bet) {
+            balance -= bet/2;
+             throw new NotEnoughBalanceException();
+        }
+        else{
+            balance -= bet/2;
+        }
+
         currentBet = bet;
 
         isPlaying = true;
