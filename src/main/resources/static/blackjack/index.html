@@ -44,11 +44,15 @@
         }
 
         body{
+            min-height: 100%;
+            min-width: 1024px;
+            width: 100%;
+            height: auto;
             font-family: Arial, Helvetica, sans-serif;
             color: #333;
             font-size: 15px;
             line-height: 40px;
-            background-color: #FFFFFF;
+            background-image: url('background.jpg');
         }
 
         .clear{
@@ -59,9 +63,10 @@
             width: auto;
             max-width: 900px;
             margin: 0 auto;
-            background-color: #fff;
             min-height: 500px;
             text-align: center;
+            font-family: "KBIZ한마음고딕 B";
+            color: white;
         }
 
         .dealer-cards .card, .player-cards .card {
@@ -98,7 +103,7 @@
 
 
         .btn {
-            font: bold 13px "Helvetica Neue", Helvetica, Arial, clean, sans-serif !important;
+            font: bold 15px "Helvetica Neue", Helvetica, Arial, clean, sans-serif !important;
             text-shadow: 0 -1px 1px rgba(0,0,0,0.25), -2px 0 1px rgba(0,0,0,0.25);
             border-radius: 5px;
             -moz-border-radius: 5px;
@@ -106,11 +111,11 @@
             -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
             -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
             display: inline-block;
-            color: white;
+            color: black;
             white-space: nowrap;
             text-decoration: none;
             cursor: pointer;
-            background-color: #A9014B;
+            background-color: white;
             border-style: none;
             text-align: center;
             overflow: visible;
@@ -121,6 +126,7 @@
             -ms-user-select: none;
             user-select: none;
             padding-top: 10px;
+            opacity: 0.7;
             height: 40px;
             width: 100px;
             -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -132,11 +138,11 @@
         .btn:focus {
             background-position: 0 -50px;
             color: white;
-            background-color: #c90059;
+            background-color: gray;
         }
 
         .btn:active {
-            background-color: #7c0d3e;
+            background-color: black;
             -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.7);
             -webkit-box-shadow: none;
         }
@@ -155,7 +161,7 @@
         }
 
         /*.dealer-total{*/
-            /*visibility: hidden;*/
+        /*visibility: hidden;*/
         /*}*/
 
 
@@ -399,31 +405,79 @@
         }
 
         .money{
-            color: green;
+            color: white;
             font-size: 21px;
         }
         .rank{
             float:left;
+        }
+
+        .login_img{
+            margin-top:  300px;
+        }
+
+        .login_text{
+            color: white;
+            font-size: 30px;
+            font-family: "KBIZ한마음고딕 B";
+            margin-bottom: 30px;
+        }
+
+        .no_id_in_data{
+            color: white;
+            font-size: 30px;
+            font-family: "KBIZ한마음고딕 B";
+            margin-top: 300px;
+        }
+
+        .view_id_and_money{
+            padding: 10px 10px 10px 10px;
+            width: 300px;
+            margin-top: 100px;
+            background-color: white;
+            color: black;
+            border-radius: 5px;
+            /*opacity: 0.7;*/
+            margin: 30px auto 30px auto;
+        }
+
+        #myID, #myMONEY{
+            background-color: lightgray;
+            border-radius: 5px;
+            color: black;
+            padding: 2px 5px 2px 5px;
+        }
+
+        #input_login_name{
+            font-family: "KBIZ한마음고딕 B";
+            background-color:white;
+            height: 30px;
+            opacity: 0.5;
+            border: none;
+            font-size: 20px;
+            color: black;
         }
     </style>
 </head>
 <body>
 <div class="page" id="login">
     <div>
-        <input type="text" id="input_login_name"/>
-        <div class="buttons"><div class="btn" id="login_button">Login</div></div>
-        <div class="buttons"><div class="btn" id="signup_button">Signup</div></div>
+        <div></div>
+        <div class="login_img"><img src="real_real_daemoon.png"></div>
+        <div class="login_text">ID <input type="text" id="input_login_name"/></div>
+        <div class="buttons"><div class="btn" id="login_button">Login</div> <div class="btn" id="signup_button">Signup</div></div>
+        <!--<div class="buttons"></div>-->
     </div>
 </div>
 <div class="page" id="lobby" style="display: none">
     <div>
+        <div class="no_id_in_data">입력과 일치하는 아이디가 없네요.<br>아래 버튼을 누르면 아이디가 생성됩니다.</div>
         <div class="buttons"><div class="btn" id="create_room_button">Create</div></div>
     </div>
 </div>
 <div class="page" id="game" style="display: none">
-    <div>
-        <p>ID : <span id="myID"> </span> </p><!--현재 아이디 추가-->
-        <p>MONEY : <span id="myMONEY"> </span></p><!--현재 아이디 추가-->
+    <div class="view_id_and_money">
+        <p>ID&nbsp;<span id="myID"></span> &nbsp; &nbsp; &nbsp; MONEY&nbsp;<span id="myMONEY"> </span></p><!--현재 아이디 추가-->
     </div>
     <div class="rank"> <!-- ranking 추가 -->
         <p>Ranking : </p>
