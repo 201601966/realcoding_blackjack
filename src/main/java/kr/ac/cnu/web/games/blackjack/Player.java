@@ -1,5 +1,6 @@
 package kr.ac.cnu.web.games.blackjack;
 
+import kr.ac.cnu.web.exceptions.BetTooMuchException;
 import kr.ac.cnu.web.exceptions.NoUserException;
 import kr.ac.cnu.web.exceptions.NotEnoughBalanceException;
 //import kr.ac.cnu.web.exceptions.BetZeroException;
@@ -34,6 +35,9 @@ public class Player {
     public void placeBet(long bet) {
         if(balance < bet) {
             throw new NotEnoughBalanceException();
+        }
+        if (bet > 10000) {
+            throw new BetTooMuchException();
         }
         if(bet == 0){ // bet금액이 0일때
             throw new NoUserException();
