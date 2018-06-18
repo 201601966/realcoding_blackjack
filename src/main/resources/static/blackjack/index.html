@@ -519,6 +519,21 @@
         }).done(function(data) {
             drawGameRoom(data);
         });
+
+        if(bet > 10000){ // betting금액이 10000이면 경고창 띄워 알려주기
+            alert("10000보다 작은 금액을 betting 해야 됩니다.");
+        }
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/bet',
+            headers: {
+                'name':user.name
+            },
+            data: JSON.stringify(bet),
+            contentType:'application/json;',
+        }).done(function(data) {
+            drawGameRoom(data);
+        });
     })
 
     $('#hit').click(function() {
