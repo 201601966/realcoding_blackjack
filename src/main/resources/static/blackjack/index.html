@@ -469,7 +469,7 @@
             color: black;
         }
 
-        .rank{
+        /*.rank{
             padding: 5px 5px 5px 5px;
             width: 500px;
             background-color: indianred;
@@ -481,14 +481,13 @@
             opacity: 0.8;
             margin: 10px auto 10px auto;
             text-align: left;
-        }
+        }*/
 
         .ranking{
-            text-align: center;
             font-size: 30px;
         }
 
-        .rank_id{
+        /*.rank_id{
             padding-left: 130px;
             width: 100px;
             color: black;
@@ -500,7 +499,7 @@
             width: 200px;
             display: inline;
             color: white;
-        }
+        }*/
 
     </style>
 </head>
@@ -516,7 +515,7 @@
 </div>
 <div class="page" id="lobby" style="display: none">
     <div>
-        <div class="no_id_in_data">입력과 일치하는 아이디가 없네요.<br>아래 버튼을 누르면 아이디가 생성됩니다.</div>
+        <div class="no_id_in_data">환 영 합 니 다<br>8 조 와 18 조 의 콜 라 보 레 이 션</div>
         <div class="buttons"><div class="btn" id="create_room_button">Create</div></div>
     </div>
 </div>
@@ -526,7 +525,7 @@
     </div>
     <div class="rank"> <!-- ranking 추가 -->
         <div class="ranking">Ranking</div>
-        <div class="rank_id">아이디</div>&nbsp;<div class="rank_val">벨류</div>
+        <div id="myRANK"></div>
     </div>
     <br><br>
     <div class="dealer-cards"></div>
@@ -561,6 +560,71 @@
 <script>
     var user;
     var gameRoomId;
+
+    function sort(){
+        var tttt= document.getElementById("myRANK");
+
+        for(var i=0;i<tttt.childNodes.length;i++){
+            for(var j=i+1;j<tttt.childNodes.length;j++){
+                if(tttt.childNodes[i].childNodes[1].innerHTML<tttt.childNodes[j].childNodes[1].innerHTML){
+                    tttt.insertBefore(tttt.childNodes[j], tttt.childNodes[i]);
+                }
+            }
+        }
+    }
+    function makerank(){
+        for(var i=0;i<localStorage.length;i++){
+            rankkk(localStorage.key(i));
+        }
+    }
+    function rankkk(k){
+
+        if(check(k)){
+            var newItem=document.createElement("p");
+            var idspan=document.createElement("span");
+            var valspan=document.createElement("span");
+
+            var getId=k;
+            var getValue=localStorage.getItem(k);
+
+            var text1 = document.createTextNode(getId);
+            var text2 = document.createTextNode(getValue);
+
+            newItem.setAttribute("id",getId);
+            idspan.setAttribute("id",getId+"i");
+            valspan.setAttribute("id",getId+"v");
+            idspan.appendChild(text1);
+            valspan.appendChild(text2);
+            newItem.appendChild(idspan);
+            newItem.appendChild(valspan);
+            document.getElementById("myRANK").appendChild(newItem);
+
+            sort();
+
+        }
+    }
+    function check(idd){
+        var p = document.getElementById("myRANK");
+        //var c = p.childNodes;
+        for( var i=0;i<p.childNodes.length;i++){
+            if(p.childNodes[i].id==idd){
+                document.getElementById(idd+"v").innerHTML=localStorage.getItem(idd);
+                return false;
+            }
+        }
+       /* for( var i=0;i<p.childNodes.length;i++){
+             var c = document.getElementById("myRANK").childNodes[i];
+            for(var j=i+1;j<p.childNodes.length;j++ ){
+                var d =  document.getElementById("myRANK").childNodes[j];
+                if(c.childNodes[0].id==d.childNodes[0].id){
+                    document.getElementById(user.name+"v").innerHTML=localStorage.getItem(user.name);
+                    return false;
+                }
+            }
+
+        }*/
+        return true;
+    }
 
     $('#login_button').click(function() {
         var loginName = $('#input_login_name').val();
@@ -669,6 +733,10 @@
             },
         }).done(function(data) {
             drawGameRoom(data);
+            var money = parseInt($('#money').html());
+            localStorage.setItem(user.name, money);
+            makerank();
+            rankkk(user.name);
         });
     })
 
@@ -681,6 +749,10 @@
             },
         }).done(function(data) {
             drawGameRoom(data);
+            var money = parseInt($('#money').html());
+            localStorage.setItem(user.name, money);
+            makerank();
+            rankkk(user.name);
         });
     })
 
