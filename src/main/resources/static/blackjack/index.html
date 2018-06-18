@@ -468,6 +468,40 @@
             font-size: 20px;
             color: black;
         }
+
+        .rank{
+            padding: 5px 5px 5px 5px;
+            width: 500px;
+            background-color: indianred;
+            color: white;
+            border-radius: 5px;
+            left:130px;
+            top: 30px;
+            position: fixed;
+            opacity: 0.8;
+            margin: 10px auto 10px auto;
+            text-align: left;
+        }
+
+        .ranking{
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .rank_id{
+            padding-left: 130px;
+            width: 100px;
+            color: black;
+            display: inline;
+        }
+
+        .rank_val{
+            padding-left: 130px;
+            width: 200px;
+            display: inline;
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -491,9 +525,10 @@
         <p>ID&nbsp;<span id="myID"></span> &nbsp; &nbsp; &nbsp; MONEY&nbsp;<span id="myMONEY"> </span></p><!--현재 아이디 추가-->
     </div>
     <div class="rank"> <!-- ranking 추가 -->
-        <p>Ranking : </p>
+        <div class="ranking">Ranking</div>
+        <div class="rank_id">아이디</div>&nbsp;<div class="rank_val">벨류</div>
     </div>
-    <br>
+    <br><br>
     <div class="dealer-cards"></div>
     <div class="clear"></div>
     <div class="player-cards"></div>
