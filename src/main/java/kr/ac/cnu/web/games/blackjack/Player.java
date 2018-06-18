@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 public class Player {
     @Getter
-    private long balance;
+    private double balance;
     @Getter
-    private long currentBet;
+    private double currentBet;
     @Getter
     private boolean isPlaying;
+    @Getter
+    private boolean isDoubleDown;
     @Getter
     private Hand hand;
 
@@ -25,6 +27,7 @@ public class Player {
         this.hand = hand;
 
         isPlaying = false;
+        isDoubleDown = false;
     }
 
     public void reset() {
@@ -32,7 +35,7 @@ public class Player {
         isPlaying = false;
     }
 
-    public void placeBet(long bet) {
+    public void placeBet(double bet) {
 
         if (bet > 10000) {
             throw new BetTooMuchException();
@@ -48,7 +51,7 @@ public class Player {
              throw new NotEnoughBalanceException();
         }
         else{
-            balance -= bet/2;
+            //balance -= bet/2;
         }
 
         currentBet = bet;
@@ -62,17 +65,26 @@ public class Player {
     }
 
     public void win() {
-        balance += currentBet * 1.5;
+        balance -= 0.5 * currentBet;
         //currentBet = 0;
     }
 
+    public void doubleWin() {
+
+    }
+
     public void tie() {
-        balance += currentBet;
+        balance -= currentBet;
         //currentBet = 0;
     }
 
     public void lost() {
+        balance -= currentBet * 2;
         //currentBet = 0;
+    }
+
+    public void doubleLost() {
+        balance -= 3*currentBet;
     }
 
     public Card hitCard() {
@@ -87,4 +99,11 @@ public class Player {
         this.isPlaying = false;
     }
 
+    public void doubleDown() {
+        if(hand.getCardSum() < 21){
+            hand.drawCard();
+        }
+        isDoubleDown = true;
+        stand();
+    }
 }

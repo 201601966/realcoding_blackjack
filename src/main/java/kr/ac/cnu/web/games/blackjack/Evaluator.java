@@ -26,10 +26,20 @@ public class Evaluator {
             playerMap.forEach((s, player) ->{
                 int playerResult_2 = player.getHand().getCardSum();
                 if (playerResult_2 > 21) {
-                    player.lost();
+                    if(player.isDoubleDown() == false) {
+                        player.lost();
+                    }
+                    else {
+                        player.doubleLost();
+                    }
                 }
                 else{
-                    player.win();
+                    if(player.isDoubleDown() == false) {
+                        player.win();
+                    }
+                    else {
+                        player.doubleWin();
+                    }
                 }
             });
             return true;
@@ -38,13 +48,28 @@ public class Evaluator {
         playerMap.forEach((s, player) -> {
             int playerResult = player.getHand().getCardSum();
             if (playerResult > 21) {
-                player.lost();
+                if(player.isDoubleDown() == false) {
+                    player.lost();
+                }
+                else {
+                    player.doubleLost();
+                }
             } else if (playerResult > dealerResult) {
-                player.win();
+                if(player.isDoubleDown() == false) {
+                    player.win();
+                }
+                else {
+                    player.doubleWin();
+                }
             } else if (playerResult == dealerResult) {
                 player.tie();
             } else {
-                player.lost();
+                if(player.isDoubleDown() == false) {
+                    player.lost();
+                }
+                else {
+                    player.doubleLost();
+                }
             }
         });
 

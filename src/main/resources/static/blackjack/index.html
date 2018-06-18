@@ -535,7 +535,7 @@
     <div class="buttons">
         <div class="btn" id="hit">Hit</div>
         <div class="btn" id="stand">Stand</div>
-        <div class="btn" id="doubledown">double down</div>
+        <div class="btn" id="doubleDown">Double Down</div>
     </div>
     <div class="buttons"><div class="btn" id="deal">Deal</div></div>
     <div class="bet_and_available_funds">
@@ -656,7 +656,7 @@
                 'name':user.name
             },
         }).done(function(data) {
-            drawGameRoom(data);
+            doubleDrawGameRoom(data);
         });
     })
 
@@ -672,40 +672,14 @@
         });
     })
 
-    $('#doubledown').click(function(){
+    $('#doubleDown').click(function(){
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/hit',
+            url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/doubleDown',
             headers: {
                 'name':user.name
             },
         }).done(function(data) {
-            drawGameRoom(data);
-            $('#hit').hide();
-            $('#stand').hide();
-            $('#deal').show();
-            $('#doubledown').hide();
-            var currentBet = parseInt($('#bet').html());
-            var money = parseInt($('#money').html());
-            if(data.playerList[user.name].hand.cardSum < 21 && data.dealer.hand.cardSum < 21){
-                if(data.dealer.hand.cardSum < data.playerList[user.name].hand.cardSum){
-                    console.log('dealer<21 player < 21 plus');
-                    money += (2 * currentBet);
-                }
-                else{
-                    console.log('dealer<21 player < 21 minus');
-                    money -= (2 * currentBet);
-                }
-            }
-            else if(data.dealer.hand.cardSum > 21 && data.playerList[user.name].hand.cardSum < 21){
-                console.log('dealer > 21 player < 21 plus');
-                money += (2 * currentBet);
-            }
-            else if(data.dealer.hand.cardSum < 21 && data.playerList[user.name].hand.cardSum > 21){
-                console.log('dealer < 21 player > 21 minus');
-                money -= (2 * currentBet);
-            }
-            data.finished = true;
             drawGameRoom(data);
         });
     })
@@ -747,7 +721,7 @@
             $('#less').show();
             $('#hit').hide();
             $('#stand').hide();
-            $('#doubledown').hide();
+            $('#doubleDown').hide();
 
         } else {
             $('#deal').hide();
@@ -755,7 +729,52 @@
             $('#less').hide();
             $('#hit').show();
             $('#stand').show();
-            $('#doubledown').show();
+            $('#doubleDown').show();
+        }
+
+        $('.dealer-cards').html("");
+        gameRoom.dealer.hand.cardList.forEach(function(card) {
+            $('.dealer-cards').append(generateCardDiv(card.rank, card.suit));
+        })
+        if (gameRoom.dealer.hand.cardList.length == 1) {
+            $('.dealer-cards').append('<div class="card card2 flipped" data-value="6"></div>');
+        }
+        if (gameRoom.dealer.hand.cardList.length > 0) {
+            $('.dealer-cards').append('<div id="dealerTotal" class="dealer-total">' + gameRoom.dealer.hand.cardSum + '</div>');
+        }
+
+        $('.player-cards').html("");
+        gameRoom.playerList[user.name].hand.cardList.forEach(function(card) {
+            $('.player-cards').append(generateCardDiv(card.rank, card.suit));
+        });
+        if (gameRoom.playerList[user.name].hand.cardList.length > 0) {
+            $('.player-cards').append('<div id="playerTotal" class="player-total">' + gameRoom.playerList[user.name].hand.cardSum + '</div>');
+        }
+
+        $('#bet').html(gameRoom.playerList[user.name].currentBet);
+        $('#money').html(gameRoom.playerList[user.name].balance);
+        //현재 내 돈 추가
+        $('#myMONEY').html(gameRoom.playerList[user.name].balance);
+    }
+
+    function doubleDrawGameRoom(gameRoom) {
+        console.log(gameRoom);
+        console.log(gameRoom.finished);
+        if (gameRoom.finished) {
+            $('#deal').show();
+            $('#more').show();
+            $('#less').show();
+            $('#hit').hide();
+            $('#stand').hide();
+            $('#doubleDown').hide();
+
+        } else {
+            $('#deal').hide();
+            $('#more').hide();
+            $('#less').hide();
+            $('#hit').show();
+            $('#stand').show();
+            $('#doubleDown').hide();
         }
 
         $('.dealer-cards').html("");
