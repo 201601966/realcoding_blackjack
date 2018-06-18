@@ -432,7 +432,11 @@
     <div class="dealer-cards"></div>
     <div class="clear"></div>
     <div class="player-cards"></div>
-    <div class="buttons"><div class="btn" id="hit">Hit</div><div class="btn" id="stand">Stand</div></div>
+    <div class="buttons">
+        <div class="btn" id="hit">Hit</div>
+        <div class="btn" id="stand">Stand</div>
+        <div class="btn" id="doubledown">double down</div>
+    </div>
     <div class="buttons"><div class="btn" id="deal">Deal</div></div>
     <div class="betting-area">
         <b>Your Bet</b><br>
@@ -566,6 +570,44 @@
         });
     })
 
+    $('#doubledown').click(function(){
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/hit',
+            headers: {
+                'name':user.name
+            },
+        }).done(function(data) {
+            drawGameRoom(data);
+            $('#hit').hide();
+            $('#stand').hide();
+            $('#deal').show();
+            $('#doubledown').hide();
+            var currentBet = parseInt($('#bet').html());
+            var money = parseInt($('#money').html());
+            if(data.playerList[user.name].hand.cardSum < 21 && data.dealer.hand.cardSum < 21){
+                if(data.dealer.hand.cardSum < data.playerList[user.name].hand.cardSum){
+                    console.log('dealer<21 player < 21 plus');
+                    money += (2 * currentBet);
+                }
+                else{
+                    console.log('dealer<21 player < 21 minus');
+                    money -= (2 * currentBet);
+                }
+            }
+            else if(data.dealer.hand.cardSum > 21 && data.playerList[user.name].hand.cardSum < 21){
+                console.log('dealer > 21 player < 21 plus');
+                money += (2 * currentBet);
+            }
+            else if(data.dealer.hand.cardSum < 21 && data.playerList[user.name].hand.cardSum > 21){
+                console.log('dealer < 21 player > 21 minus');
+                money -= (2 * currentBet);
+            }
+            data.finished = true;
+            drawGameRoom(data);
+        });
+    })
+
     $('#more').click(function(){
         var bet = 1000;//180610
         var currentBet = parseInt($('#bet').html());
@@ -596,12 +638,14 @@
 
     function drawGameRoom(gameRoom) {
         console.log(gameRoom);
+        console.log(gameRoom.finished);
         if (gameRoom.finished) {
             $('#deal').show();
             $('#more').show();
             $('#less').show();
             $('#hit').hide();
             $('#stand').hide();
+            $('#doubledown').hide();
 
         } else {
             $('#deal').hide();
@@ -609,6 +653,7 @@
             $('#less').hide();
             $('#hit').show();
             $('#stand').show();
+            $('#doubledown').show();
         }
 
         $('.dealer-cards').html("");
@@ -619,7 +664,7 @@
             $('.dealer-cards').append('<div class="card card2 flipped" data-value="6"></div>');
         }
         if (gameRoom.dealer.hand.cardList.length > 0) {
-            $('.dealer-cards').append('<div id="dealerTotal" class="dealer-total">' + gameRoom.dealer.hand.cardSum + '</div>')
+            $('.dealer-cards').append('<div id="dealerTotal" class="dealer-total">' + gameRoom.dealer.hand.cardSum + '</div>');
         }
 
         $('.player-cards').html("");
@@ -627,7 +672,7 @@
             $('.player-cards').append(generateCardDiv(card.rank, card.suit));
         });
         if (gameRoom.playerList[user.name].hand.cardList.length > 0) {
-            $('.player-cards').append('<div id="playerTotal" class="player-total">' + gameRoom.playerList[user.name].hand.cardSum + '</div>')
+            $('.player-cards').append('<div id="playerTotal" class="player-total">' + gameRoom.playerList[user.name].hand.cardSum + '</div>');
         }
 
         $('#bet').html(gameRoom.playerList[user.name].currentBet);
